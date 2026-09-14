@@ -252,6 +252,54 @@ agentseek dev
 
 - Node.js ≥ 22.12.0
 
+系统自带 Node 过低时，可安装官方二进制到用户目录后再加入 `PATH`（示例为 Linux x64 的 22.19.0）：
+
+```bash
+mkdir -p ~/.local
+curl -fsSL https://nodejs.org/dist/v22.19.0/node-v22.19.0-linux-x64.tar.xz | tar -xJ -C ~/.local
+ln -sfn ~/.local/node-v22.19.0-linux-x64 ~/.local/node
+export PATH="$HOME/.local/node/bin:$PATH"
+node -v   # 应输出 v22.19.0
+```
+
+当前终端里跑 `npm` / `astro` 前，请确保上述 `PATH` 已生效。
+
+### 从 Fork 克隆到本地
+
+先在 GitHub 上 Fork [datawhalechina/deepagents-in-action](https://github.com/datawhalechina/deepagents-in-action/)，再克隆自己的仓库。
+
+当前目录为空时，可直接克隆到当前目录：
+
+```bash
+git clone https://github.com/<your-username>/deepagents-in-action.git .
+```
+
+当前目录已有文件时，克隆到子目录：
+
+```bash
+git clone https://github.com/<your-username>/deepagents-in-action.git
+cd deepagents-in-action
+```
+
+将 `<your-username>` 换成你的 GitHub 用户名。克隆完成后，`origin` 指向你的 Fork。
+
+### 关联上游并同步官方更新
+
+建议再加一个 `upstream`，方便拉取官方仓库的更新：
+
+```bash
+git remote add upstream https://github.com/datawhalechina/deepagents-in-action.git
+git fetch upstream
+git remote -v
+```
+
+同步官方 `main`：
+
+```bash
+git fetch upstream
+git merge upstream/main
+```
+
 ### 安装与启动
 
 ```bash
@@ -261,12 +309,21 @@ npm install
 # 启动开发服务器（含内容预处理）
 npm run dev
 
+# 如需对外网卡访问，可指定 host 与端口
+npm run dev -- --host 0.0.0.0 --port 4321
+
 # 构建生产版本
 npm run build
 
 # 预览构建产物
 npm run preview
 ```
+
+站点配置了 `base: /deepagents-in-action`，本地预览请打开：
+
+http://localhost:4321/deepagents-in-action
+
+不要只访问 `http://localhost:4321/`，否则会看不到课程首页。
 
 ### 项目结构
 
